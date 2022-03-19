@@ -24,15 +24,13 @@ services:
         restart: unless-stopped
     postgres:
         container_name: postgres
-        env_file:
-            - .env.docker.local
         image: postgres:12
         networks:
             - codesupport-api
         environment:
-            POSTGRES_PASSWORD: ${DATABASE_PASS}
-            POSTGRES_USER: ${DATABASE_USER}
-            POSTGRES_DB: ${DATABASE_NAME}
+            POSTGRES_PASSWORD: ruv2cyHT4H78BVzK7b4DnBAHJR8dG4fG
+            POSTGRES_USER: admin
+            POSTGRES_DB: codesupport-api
             PG_DATA: /var/lib/postgresql/data
         ports:
             - 5432:5432
