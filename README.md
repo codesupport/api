@@ -20,7 +20,7 @@ This will automatically set up docker images for postgresql and the nestJS API w
 If any NPM dependencies are installed or uninstalled, docker might not pick up the changes to the NPM dependencies. To fix this, run `docker:rebuild`. This will rebuild the image and refresh any cached NPM packages.
 
 ### **Without Docker**
-The application can also be ran without Docker. In this case, Node.js version 12 or later and a PostgreSQL server instance is required.
+The application can also be ran without Docker. In this case, Node.js version 12 or later (tested with 16.13) and a PostgreSQL server instance is required.
 
 Copy *.env.example* and rename it to *.env*, then fill out the required PostgreSQL login details for your PostgreSQL server. Start the app by running the *start:debug* npm script.
 
