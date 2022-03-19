@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+    main:
+        container_name: main
+        image: nestjs-api-dev:1.0.0
+        build:
+            context: .
+            target: development
+            dockerfile: ./Dockerfile
+        command: npx nest start --debug 0.0.0.0:9229 --watch
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - ${PORT}:${PORT}
+            - 9229:9229      
+        env_file:
+            - .env.docker.local
+        networks:
+            - codesupport-api
+        depends_on:
+            - postgres
+        restart: unless-stopped
+    postgres:
+        container_name: postgres
+        env_file:
+            - .env.docker.local
+        image: postgres:12
+        networks:
+            - codesupport-api
+        environment:
+            POSTGRES_PASSWORD: ${DATABASE_PASS}
+            POSTGRES_USER: ${DATABASE_USER}
+            POSTGRES_DB: ${DATABASE_NAME}
+            PG_DATA: /var/lib/postgresql/data
+        ports:
+            - 5432:5432
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+networks:
+  codesupport-api:
+volumes:
+  pgdata:
