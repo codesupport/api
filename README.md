@@ -3,9 +3,6 @@
 ## About
 This repository contains the code for the CodeSupport API. The project is written in TypeScript using the [NestJS](https://nestjs.com/) framework with a postgreSQL database.
 
-## **Any Questions?**
- Feel free to mention @LamboCreeper#6510 in the [CodeSupport Discord](https://codesupport.dev/discord).
-
 ## **Getting started**
 
 ### **With Docker**
@@ -27,7 +24,11 @@ Copy *.env.example* and rename it to *.env*, then fill out the required PostgreS
 `npm run start:debug`
 
 ### **Attaching a debugger**
+### Visual Studio Code
 With both the docker and non-docker approach, the application is automatically set to debug mode. If you're using visual studio code, you can easily attach a debugger by going to the 'Run and Debug' tab and selecting either the `debug-docker` or `debug-local` profile. 
 
 ![](https://i.imgur.com/WyFg7D0.png)
 
+
+## **Any Questions?**
+ Feel free to mention @LamboCreeper#6510 in the [CodeSupport Discord](https://codesupport.dev/discord).
