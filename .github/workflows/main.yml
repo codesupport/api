@@ -1,0 +1,37 @@
+name: CI
+on: [pull_request]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Linter
+        run: |
+          npm ci
+          npm run lint
+  test_unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Unit Tests
+        run: |
+          npm ci
+          npm run test:cov
+  test_e2e:
+    name: End to End Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Runs End to End Tests
+        run: |
+          npm ci
+          npm run test:e2e
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Builds Source Code
+        run: |
+          npm ci
+          npm run build
