@@ -8,7 +8,6 @@ services:
             context: .
             target: development
             dockerfile: ./Dockerfile
-        command: npx nest start --debug 0.0.0.0:9229 --watch
         volumes:
             - .:/usr/src/app
             - /usr/src/app/node_modules

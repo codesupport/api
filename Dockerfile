@@ -10,6 +10,8 @@ COPY . .
 
 RUN npm run build
 
+CMD ["npx", "nest", "start", "--debug", "0.0.0.0:9229", "--watch"]
+
 FROM node:16.14.2-alpine3.15 as production
 
 ARG NODE_ENV=production
