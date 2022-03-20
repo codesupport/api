@@ -1,0 +1,26 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "debug-local",
+      "port": 9229,
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node"
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Debug-docker",
+      "remoteRoot": "/usr/src/app",
+      "localRoot": "${workspaceFolder}",
+      "protocol": "inspector",
+      "port": 9229,
+      "restart": true,
+      "address": "0.0.0.0",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}
