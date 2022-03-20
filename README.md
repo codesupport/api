@@ -29,6 +29,5 @@ With both the docker and non-docker approach, the application is automatically s
 
 ![](https://i.imgur.com/WyFg7D0.png)
 
-
 ## **Any Questions?**
  Feel free to mention @LamboCreeper#6510 in the [CodeSupport Discord](https://codesupport.dev/discord).
