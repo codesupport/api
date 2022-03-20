@@ -12,18 +12,16 @@ services:
             - /usr/src/app/node_modules
         ports:
             - ${PORT}:${PORT}
-            - 9229:9229      
-        env_file:
-            - .env.docker.local
+            - 9229:9229
         depends_on:
             - postgres
         restart: unless-stopped
     postgres:
         image: postgres:12
         environment:
-            POSTGRES_PASSWORD: ruv2cyHT4H78BVzK7b4DnBAHJR8dG4fG
-            POSTGRES_USER: admin
-            POSTGRES_DB: codesupport-api
+            POSTGRES_PASSWORD: ${DATABASE_PASS}
+            POSTGRES_USER: ${DATABASE_USER}
+            POSTGRES_DB: ${DATABASE_NAME}
             PG_DATA: /var/lib/postgresql/data
         ports:
             - 5432:5432
