@@ -17,7 +17,7 @@ jobs:
       - name: Run Unit Tests
         run: |
           npm ci
-          npm run test:cov
+          npm run test
   test_e2e:
     name: End to End Tests
     runs-on: ubuntu-latest
