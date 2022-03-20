@@ -1,4 +1,4 @@
-FROM node:16.14.2-alpine3.15 As development
+FROM node:16.14.2-alpine3.15 AS development
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,7 @@ RUN npm run build
 
 CMD ["npx", "nest", "start", "--debug", "0.0.0.0:9229", "--watch"]
 
-FROM node:16.14.2-alpine3.15 as production
+FROM node:16.14.2-alpine3.15 AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
