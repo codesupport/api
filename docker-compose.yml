@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
     api:
-        container_name: api
         image: nestjs-api-dev:1.0.0
         build:
             context: .
@@ -16,16 +15,11 @@ services:
             - 9229:9229      
         env_file:
             - .env.docker.local
-        networks:
-            - codesupport-api
         depends_on:
             - postgres
         restart: unless-stopped
     postgres:
-        container_name: postgres
         image: postgres:12
-        networks:
-            - codesupport-api
         environment:
             POSTGRES_PASSWORD: ruv2cyHT4H78BVzK7b4DnBAHJR8dG4fG
             POSTGRES_USER: admin
@@ -35,7 +29,5 @@ services:
             - 5432:5432
         volumes:
             - pgdata:/var/lib/postgresql/data
-networks:
-  codesupport-api:
 volumes:
   pgdata:
