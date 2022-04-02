@@ -44,10 +44,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Runs End to End Tests
         env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PASSWORD: $DB_PASS
-          POSTGRES_USER: $DB_USER
-          POSTGRES_DB: $DB_NAME
+          DATABASE_HOST: localhost
+          DATABASE_PASS: $DB_PASS
+          DATABASE_USER: $DB_USER
+          DATABASE_NAME: $DB_NAME
         run: |
           npm ci
           npm run test:e2e
