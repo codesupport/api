@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Runs End to End Tests
         env:
-          DATABASE_HOST: localhost
+          DATABASE_HOST: postgres
           DATABASE_PASS: $DB_PASS
           DATABASE_USER: $DB_USER
           DATABASE_NAME: $DB_NAME
