@@ -21,9 +21,30 @@ jobs:
   test_e2e:
     name: End to End Tests
     runs-on: ubuntu-latest
+    container: node:16.14.2-alpine3.15
+    env:
+      DB_PASS: ruv2cyHT4H78BVzK7b4DnBAHJR8dG4fG
+      DB_USER: admin
+      DB_NAME: codesupport-api
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: $DB_PASS
+          POSTGRES_USER: $DB_USER
+          POSTGRES_DB: $DB_NAME
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v2
       - name: Runs End to End Tests
+        env:
+          POSTGRES_PASSWORD: $DB_PASS
+          POSTGRES_USER: $DB_USER
+          POSTGRES_DB: $DB_NAME
         run: |
           npm ci
           npm run test:e2e
