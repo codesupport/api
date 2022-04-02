@@ -28,7 +28,7 @@ jobs:
       DB_NAME: codesupport-api
     services:
       postgres:
-        image: postgres
+        image: postgres:12
         env:
           POSTGRES_PASSWORD: $DB_PASS
           POSTGRES_USER: $DB_USER
