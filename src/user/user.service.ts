@@ -27,8 +27,6 @@ export class UserService {
   createUser(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
 
-    user.created = new Date();
-    user.modified = new Date();
     user.auth_id = createUserDto.auth_id;
     user.username = createUserDto.username;
 
@@ -40,7 +38,6 @@ export class UserService {
 
     user.auth_id = updateUserDto.auth_id || user.auth_id;
     user.username = updateUserDto.username || user.username;
-    user.modified = new Date();
 
     return this.usersRepository.save(user);
   }
