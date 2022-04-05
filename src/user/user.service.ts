@@ -34,10 +34,9 @@ export class UserService {
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.getUserByID(id);
+    let user = await this.getUserByID(id);
 
-    user.auth_id = updateUserDto.auth_id || user.auth_id;
-    user.username = updateUserDto.username || user.username;
+    user = { ...user, ...updateUserDto };
 
     return this.usersRepository.save(user);
   }
