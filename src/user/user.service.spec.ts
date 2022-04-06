@@ -51,7 +51,7 @@ describe("UserService", () => {
     expect(repository).toBeDefined();
   });
 
-  describe("getAll", () => {
+  describe("getAll()", () => {
     it("should return all users", async () => {
       const spy = jest.spyOn(repository, "find");
 
@@ -62,7 +62,7 @@ describe("UserService", () => {
     });
   });
 
-  describe("getUserByID", () => {
+  describe("getUserByID()", () => {
     it("should return one user", async () => {
       const spy = jest.spyOn(repository, "findOne");
 
@@ -72,7 +72,7 @@ describe("UserService", () => {
     });
   });
 
-  describe("getUserByAuthID", () => {
+  describe("getUserByAuthID()", () => {
     it("should return one user", async () => {
       const spy = jest.spyOn(repository, "findOne");
 
@@ -85,7 +85,7 @@ describe("UserService", () => {
     });
   });
 
-  describe("createUser", () => {
+  describe("createUser()", () => {
     it("should save a new user", async () => {
       const dto = new CreateUserDTO();
       dto.auth_id = "auth0|someauthid";
@@ -100,7 +100,7 @@ describe("UserService", () => {
     });
   });
 
-  describe("updateUser", () => {
+  describe("updateUser()", () => {
     it("Should update the username", async () => {
       const dto = new UpdateUserDTO();
       dto.username = "TestUserName";
