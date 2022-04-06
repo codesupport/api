@@ -1,8 +1,8 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
+import { CreateUserDTO } from "./dto/create-user.dto";
+import { UpdateUserDTO } from "./dto/update-user.dto";
 import { User } from "./user.entity";
 import { UserService } from "./user.service";
 
@@ -51,7 +51,7 @@ describe("UserService", () => {
     expect(repository).toBeDefined();
   });
 
-  describe("UserService#getAll", () => {
+  describe("getAll", () => {
     it("should return all users", async () => {
       const spy = jest.spyOn(repository, "find");
 
@@ -62,7 +62,7 @@ describe("UserService", () => {
     });
   });
 
-  describe("UserService#getUserByID", () => {
+  describe("getUserByID", () => {
     it("should return one user", async () => {
       const spy = jest.spyOn(repository, "findOne");
 
@@ -72,7 +72,7 @@ describe("UserService", () => {
     });
   });
 
-  describe("UserService#getUserByAuthID", () => {
+  describe("getUserByAuthID", () => {
     it("should return one user", async () => {
       const spy = jest.spyOn(repository, "findOne");
 
@@ -85,9 +85,9 @@ describe("UserService", () => {
     });
   });
 
-  describe("UserService#createUser", () => {
+  describe("createUser", () => {
     it("should save a new user", async () => {
-      const dto = new CreateUserDto();
+      const dto = new CreateUserDTO();
       dto.auth_id = "auth0|someauthid";
       dto.username = "TestUserName";
 
@@ -100,9 +100,9 @@ describe("UserService", () => {
     });
   });
 
-  describe("UserService#updateUser", () => {
+  describe("updateUser", () => {
     it("Should update the username", async () => {
-      const dto = new UpdateUserDto();
+      const dto = new UpdateUserDTO();
       dto.username = "TestUserName";
 
       const spy = jest.spyOn(repository, "save");
@@ -115,7 +115,7 @@ describe("UserService", () => {
     });
 
     it("Should update the auth id", async () => {
-      const dto = new UpdateUserDto();
+      const dto = new UpdateUserDTO();
       dto.auth_id = "auth0|updatedAuthId";
 
       const spy = jest.spyOn(repository, "save");
@@ -131,7 +131,7 @@ describe("UserService", () => {
     });
 
     it("should both update username and auth_id", async () => {
-      const dto = new UpdateUserDto();
+      const dto = new UpdateUserDTO();
       dto.auth_id = "auth0|updatedAuthId";
       dto.username = "TestUserName";
 
