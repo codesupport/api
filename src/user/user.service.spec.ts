@@ -33,7 +33,11 @@ describe("UserService", () => {
         UserService,
         {
           provide: getRepositoryToken(User),
-          useClass: Repository,
+          useValue: {
+            find: jest.fn().mockResolvedValue(mockUserData),
+            findOne: jest.fn().mockResolvedValue(mockUserData[0]),
+            save: jest.fn().mockResolvedValue(mockUserData[0]),
+          },
         },
       ],
     }).compile();
@@ -49,9 +53,7 @@ describe("UserService", () => {
 
   describe("UserService#getAll", () => {
     it("should return all users", async () => {
-      const spy = jest
-        .spyOn(repository, "find")
-        .mockResolvedValueOnce(mockUserData);
+      const spy = jest.spyOn(repository, "find");
 
       const result = await service.getAll();
 
@@ -62,9 +64,7 @@ describe("UserService", () => {
 
   describe("UserService#getUserByID", () => {
     it("should return one user", async () => {
-      const spy = jest
-        .spyOn(repository, "findOne")
-        .mockResolvedValueOnce(mockUserData[0]);
+      const spy = jest.spyOn(repository, "findOne");
 
       const result = await service.getUserByID(1);
       expect(result).toEqual(mockUserData[0]);
@@ -74,9 +74,7 @@ describe("UserService", () => {
 
   describe("UserService#getUserByAuthID", () => {
     it("should return one user", async () => {
-      const spy = jest
-        .spyOn(repository, "findOne")
-        .mockResolvedValueOnce(mockUserData[0]);
+      const spy = jest.spyOn(repository, "findOne");
 
       const result = await service.getUserByAuthID(
         "auth0|6237590b647a36006ba3c6ea"
@@ -93,26 +91,61 @@ describe("UserService", () => {
       dto.auth_id = "auth0|someauthid";
       dto.username = "TestUserName";
 
-      const spy = jest.spyOn(repository, "save").mockResolvedValueOnce(null);
+      const spy = jest.spyOn(repository, "save");
 
       await service.createUser(dto);
 
       expect(spy).toBeCalled();
+      expect(spy).toBeCalledWith({ ...dto });
     });
   });
 
   describe("UserService#updateUser", () => {
-    it("Should update the user", async () => {
+    it("Should update the username", async () => {
       const dto = new UpdateUserDto();
-
       dto.username = "TestUserName";
 
-      jest.spyOn(repository, "findOne").mockResolvedValueOnce(mockUserData[1]);
-      const spy = jest.spyOn(repository, "save").mockResolvedValueOnce(null);
+      const spy = jest.spyOn(repository, "save");
 
       await service.updateUser(2, dto);
 
+      const updatedUser = { ...mockUserData[0], username: "TestUserName" };
       expect(spy).toBeCalled();
+      expect(spy).toBeCalledWith(updatedUser);
+    });
+
+    it("Should update the auth id", async () => {
+      const dto = new UpdateUserDto();
+      dto.auth_id = "auth0|updatedAuthId";
+
+      const spy = jest.spyOn(repository, "save");
+
+      await service.updateUser(2, dto);
+
+      const updatedUser = {
+        ...mockUserData[0],
+        auth_id: "auth0|updatedAuthId",
+      };
+      expect(spy).toBeCalled();
+      expect(spy).toBeCalledWith(updatedUser);
+    });
+
+    it("should both update username and auth_id", async () => {
+      const dto = new UpdateUserDto();
+      dto.auth_id = "auth0|updatedAuthId";
+      dto.username = "TestUserName";
+
+      const spy = jest.spyOn(repository, "save");
+
+      await service.updateUser(2, dto);
+
+      const updatedUser = {
+        ...mockUserData[0],
+        auth_id: "auth0|updatedAuthId",
+        username: "TestUserName",
+      };
+      expect(spy).toBeCalled();
+      expect(spy).toBeCalledWith(updatedUser);
     });
   });
 });
