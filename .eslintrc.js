@@ -12,6 +12,18 @@ module.exports = {
     }
   },
   rules: {
+    "indent": "off",
+    "@typescript-eslint/indent": [
+      "error",
+      "tab",
+      {
+        "ignoredNodes": [
+          "FunctionExpression > .params[decorators.length > 0]",
+          "FunctionExpression > .params > :matches(Decorator, :not(:first-child))",
+          "ClassBody.body > PropertyDefinition[decorators.length > 0] > .key"
+        ]
+      }
+    ],
     "new-cap": "off",
     "no-useless-constructor": "off",
     "no-empty-function": "off",
