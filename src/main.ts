@@ -8,6 +8,8 @@ const port = Number.parseInt(process.env.PORT) || 3000;
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
+    app.enableCors();
+
     const swaggerConfig = new DocumentBuilder()
         .setTitle('Codesupport API')
         .setVersion("v2")
