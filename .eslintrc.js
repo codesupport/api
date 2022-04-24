@@ -13,6 +13,7 @@ module.exports = {
   },
   rules: {
     "indent": "off",
+    "object-curly-spacing": ["error", "always"],
     "@typescript-eslint/indent": [
       "error",
       "tab",

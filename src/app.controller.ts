@@ -9,7 +9,7 @@ export class AppController {
 
 	@Get()
 	@ApiTags("Example Routes")
-	@ApiResponse({ status: 200, description: "Returns Hello World!"})
+	@ApiResponse({ status: 200, description: "Returns Hello World!" })
 	getHello(): string {
 		return this.appService.getHello();
 	}
