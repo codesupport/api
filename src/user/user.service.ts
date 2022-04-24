@@ -7,37 +7,37 @@ import { User } from "./user.entity";
 
 @Injectable()
 export class UserService {
-  constructor(
+	constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>
-  ) {}
+	) {}
 
-  getUserByID(id: number): Promise<User> {
-    return this.usersRepository.findOne({ where: { id } });
-  }
+	getUserByID(id: number): Promise<User> {
+		return this.usersRepository.findOne({ where: { id } });
+	}
 
-  getUserByAuthID(auth_id: string): Promise<User> {
-    return this.usersRepository.findOne({ where: { auth_id } });
-  }
+	getUserByAuthID(auth_id: string): Promise<User> {
+		return this.usersRepository.findOne({ where: { auth_id } });
+	}
 
-  getAll(): Promise<User[]> {
-    return this.usersRepository.find();
-  }
+	getAll(): Promise<User[]> {
+		return this.usersRepository.find();
+	}
 
-  createUser(createUserDTO: CreateUserDTO): Promise<User> {
-    const user = new User();
+	createUser(createUserDTO: CreateUserDTO): Promise<User> {
+		const user = new User();
 
-    user.auth_id = createUserDTO.auth_id;
-    user.username = createUserDTO.username;
+		user.auth_id = createUserDTO.auth_id;
+		user.username = createUserDTO.username;
 
-    return this.usersRepository.save(user);
-  }
+		return this.usersRepository.save(user);
+	}
 
-  async updateUser(id: number, updateUserDTO: UpdateUserDTO) {
-    let user = await this.getUserByID(id);
+	async updateUser(id: number, updateUserDTO: UpdateUserDTO) {
+		let user = await this.getUserByID(id);
 
-    user = { ...user, ...updateUserDTO };
+		user = { ...user, ...updateUserDTO };
 
-    return this.usersRepository.save(user);
-  }
+		return this.usersRepository.save(user);
+	}
 }

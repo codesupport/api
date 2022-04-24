@@ -1,25 +1,25 @@
 import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	CreateDateColumn,
+	UpdateDateColumn
 } from "typeorm";
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+	@PrimaryGeneratedColumn()
+	id: number;
 
-  @Column({ unique: true })
-  auth_id: string;
+	@Column({ unique: true })
+	auth_id: string;
 
-  @Column({ unique: true })
-  username: string;
+	@Column({ unique: true })
+	username: string;
 
-  @CreateDateColumn()
-  created: Date;
+	@CreateDateColumn()
+	created: Date;
 
-  @UpdateDateColumn()
-  modified: Date;
+	@UpdateDateColumn()
+	modified: Date;
 }
