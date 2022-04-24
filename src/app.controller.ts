@@ -5,18 +5,18 @@ import { AppService } from "./app.service";
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+	constructor(private readonly appService: AppService) {}
 
-  @Get()
-  @ApiTags("Example Routes")
-  @ApiResponse({ status: 200, description: "Returns Hello World!"})
-  getHello(): string {
-    return this.appService.getHello();
-  }
+	@Get()
+	@ApiTags("Example Routes")
+	@ApiResponse({ status: 200, description: "Returns Hello World!" })
+	getHello(): string {
+		return this.appService.getHello();
+	}
 
-  @Get("protected")
-  @UseGuards(AuthGuard("jwt"))
-  getProtected(): Record<string, string> {
-    return { message: "hopefully you're authenticated!" };
-  }
+	@Get("protected")
+	@UseGuards(AuthGuard("jwt"))
+	getProtected(): Record<string, string> {
+		return { message: "hopefully you're authenticated!" };
+	}
 }
