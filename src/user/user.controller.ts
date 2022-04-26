@@ -1,4 +1,10 @@
-import { BadRequestException, Controller, Get, NotFoundException, Param } from "@nestjs/common";
+import {
+	BadRequestException,
+	Controller,
+	Get,
+	NotFoundException,
+	Param
+} from "@nestjs/common";
 import { ApiResponse } from "@nestjs/swagger";
 import { UserDTO } from "./dto/user.dto";
 import { UserService } from "./user.service";
@@ -8,9 +14,9 @@ export class UserController {
 	constructor(private userService: UserService) {}
 
 	@Get("/:id")
-	@ApiResponse({ status: 404 })
 	@ApiResponse({ status: 200, type: UserDTO })
-	@ApiResponse({ status: 300 })
+	@ApiResponse({ status: 400 })
+	@ApiResponse({ status: 404 })
 	async getUser(@Param("id") userId: string): Promise<UserDTO> {
 		if (!Number(userId)) {
 			throw new BadRequestException();
