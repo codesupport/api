@@ -1,4 +1,4 @@
-import { NotFoundException } from "@nestjs/common";
+import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { UserController } from "./user.controller";
 import { User } from "./user.entity";
@@ -77,6 +77,18 @@ describe("UserController", () => {
 			expect(result).toBeInstanceOf(NotFoundException);
 
 			expect(spy).toBeCalled();
+		});
+
+		it("Should return a 300 when the given id is not a number", async () => {
+			const spy = jest.spyOn(service, "getUserByID").mockResolvedValue(null);
+			const result = await getError(async () =>
+				controller.getUser("not a number")
+			);
+
+			expect(result).not.toBeInstanceOf(NoErrorThrownError);
+			expect(result).toBeInstanceOf(BadRequestException);
+
+			expect(spy).not.toBeCalled();
 		});
 	});
 });
