@@ -57,7 +57,7 @@ describe("UserController", () => {
 		expect(controller).toBeDefined();
 	});
 
-	describe("/{id}", () => {
+	describe("getUser()", () => {
 		it("Should return a user when it does exists", async () => {
 			const spy = jest.spyOn(service, "getUserByID");
 
