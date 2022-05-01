@@ -29,7 +29,7 @@ const mockUserData: User[] = [
 		username: "testuser",
 		created: new Date(2022, 3, 1, 20, 44),
 		modified: new Date(2022, 3, 1, 20, 44)
-	}
+	},
 ];
 
 describe("UserController", () => {
@@ -43,7 +43,8 @@ describe("UserController", () => {
 				{
 					provide: UserService,
 					useValue: {
-						getUserByID: jest.fn().mockResolvedValue(mockUserData[0])
+						getUserByID: jest.fn().mockResolvedValue(mockUserData[0]),
+						createUser: jest.fn().mockResolvedValue(mockUserData[1]),
 					}
 				}
 			]
@@ -58,7 +59,7 @@ describe("UserController", () => {
 	});
 
 	describe("getUser()", () => {
-		it("Should return a user when it does exists", async () => {
+		it("should return a user when it does exists", async () => {
 			const spy = jest.spyOn(service, "getUserByID");
 
 			const result = await controller.getUser("1");
@@ -69,7 +70,7 @@ describe("UserController", () => {
 			expect(spy).toBeCalled();
 		});
 
-		it("Should return a 404 when the user does not exist", async () => {
+		it("should return a 404 when the user does not exist", async () => {
 			const spy = jest.spyOn(service, "getUserByID").mockResolvedValue(null);
 			const result = await getError(async () => controller.getUser("1101"));
 
@@ -79,7 +80,7 @@ describe("UserController", () => {
 			expect(spy).toBeCalled();
 		});
 
-		it("Should return a 300 when the given id is not a number", async () => {
+		it("should return a 400 when the given id is not a number", async () => {
 			const spy = jest.spyOn(service, "getUserByID").mockResolvedValue(null);
 			const result = await getError(async () =>
 				controller.getUser("not a number")
@@ -89,6 +90,22 @@ describe("UserController", () => {
 			expect(result).toBeInstanceOf(BadRequestException);
 
 			expect(spy).not.toBeCalled();
+		});
+	});
+
+	describe("createUser()", () => {
+		it("should create a user in the database", async () => {
+			const spy = jest.spyOn(service, "createUser");
+
+			const result = await controller.createUser({
+				auth_id: mockUserData[1].auth_id,
+				username: mockUserData[1].username
+			});
+
+			expect(result.id).toBe(mockUserData[1].id);
+			expect(result.username).toBe(mockUserData[1].username);
+			expect(result).not.toHaveProperty("auth_id");
+			expect(spy).toBeCalled();
 		});
 	});
 });
