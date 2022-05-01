@@ -29,7 +29,7 @@ const mockUserData: User[] = [
 		username: "testuser",
 		created: new Date(2022, 3, 1, 20, 44),
 		modified: new Date(2022, 3, 1, 20, 44)
-	},
+	}
 ];
 
 describe("UserController", () => {
@@ -44,7 +44,7 @@ describe("UserController", () => {
 					provide: UserService,
 					useValue: {
 						getUserByID: jest.fn().mockResolvedValue(mockUserData[0]),
-						createUser: jest.fn().mockResolvedValue(mockUserData[1]),
+						createUser: jest.fn().mockResolvedValue(mockUserData[1])
 					}
 				}
 			]

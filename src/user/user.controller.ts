@@ -3,9 +3,10 @@ import {
 	Controller,
 	Get,
 	NotFoundException,
-	Param, Post
+	Param, Post, UseGuards
 } from "@nestjs/common";
 import { ApiResponse } from "@nestjs/swagger";
+import { AuthGuard } from "@nestjs/passport";
 import { UserDTO } from "./dto/user.dto";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { UserService } from "./user.service";
@@ -40,6 +41,7 @@ export class UserController {
 	}
 
 	@Post()
+	@UseGuards(AuthGuard("jwt"))
 	async createUser(@Body() body: CreateUserDTO): Promise<UserDTO> {
 		const user = await this.userService.createUser(body);
 
