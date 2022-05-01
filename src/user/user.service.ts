@@ -8,8 +8,8 @@ import { User } from "./user.entity";
 @Injectable()
 export class UserService {
 	constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>
+		@InjectRepository(User)
+		private usersRepository: Repository<User>
 	) {}
 
 	getUserByID(id: number): Promise<User> {
