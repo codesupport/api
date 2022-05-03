@@ -50,6 +50,7 @@ jobs:
           DATABASE_NAME: $DB_NAME
         run: |
           npm ci
+          npm run migration:run
           npm run seed:run
           npm run test:e2e
   build:

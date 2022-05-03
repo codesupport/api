@@ -29,5 +29,10 @@ With both the docker and non-docker approach, the application is automatically s
 
 ![](https://i.imgur.com/WyFg7D0.png)
 
+## Creating migrations/seeds
+TODO: Migrations
+### Seeds
+In order to generate a seed file run `npm run seed:create -- [name]`.
+
 ## **Any Questions?**
  Feel free to mention @LamboCreeper#6510 in the [CodeSupport Discord](https://codesupport.dev/discord).
