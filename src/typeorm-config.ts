@@ -1,6 +1,7 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 export const config: TypeOrmModuleOptions = {
+	name: "default",
 	type: "postgres",
 	host: process.env.DATABASE_HOST,
 	port: Number.parseInt(process.env.DATABASE_PORT) || 5432,
@@ -13,8 +14,23 @@ export const config: TypeOrmModuleOptions = {
 	synchronize: process.env.NODE_ENV !== "production",
 	migrations: [`${__dirname}/migration/*{.ts,.js}`],
 	cli: {
-		migrationsDir: "src/migration"
+		migrationsDir: `${__dirname}/migration`
 	}
 };
 
-export default config;
+export const seederConfig: TypeOrmModuleOptions = {
+	name: "seed",
+	type: "postgres",
+	host: process.env.DATABASE_HOST,
+	port: Number.parseInt(process.env.DATABASE_PORT) || 5432,
+	username: process.env.DATABASE_USER,
+	password: process.env.DATABASE_PASS,
+	database: process.env.DATABASE_NAME,
+	synchronize: false,
+	migrations: [`${__dirname}/seeds/*{.ts,.js}`],
+	cli: {
+		migrationsDir: `${__dirname}/seeds`
+	}
+};
+
+export default [config, seederConfig];
