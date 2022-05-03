@@ -1,7 +1,6 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 export const config: TypeOrmModuleOptions = {
-	name: "default",
 	type: "postgres",
 	host: process.env.DATABASE_HOST,
 	port: Number.parseInt(process.env.DATABASE_PORT) || 5432,
@@ -15,7 +14,8 @@ export const config: TypeOrmModuleOptions = {
 	migrations: [`${__dirname}/migration/*{.ts,.js}`],
 	cli: {
 		migrationsDir: `${__dirname}/migration`
-	}
+	},
+	keepConnectionAlive: true
 };
 
 export const seederConfig: TypeOrmModuleOptions = {
