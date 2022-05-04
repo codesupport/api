@@ -18,16 +18,11 @@ describe("UserController (e2e)", () => {
 	it("/user/1 (GET)", () => request(app.getHttpServer())
 		.get("/user/1")
 		.expect(200)
-		.expect(res => {
-			if (res.body.id !== 1) {
-				return false;
-			}
-
-			if (res.body.name !== "testuser") {
-				return false;
-			}
-
-			return true;
+		.expect({
+			"id": 1,
+			"username": "testuser",
+			"created": "2022-05-04T17:00:30.000Z",
+			"modified": "2022-05-04T17:10:00.000Z"
 		}));
 
 	it("/user/10002 (GET)", () => request(app.getHttpServer())
