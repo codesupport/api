@@ -48,6 +48,11 @@ jobs:
           DATABASE_PASS: $DB_PASS
           DATABASE_USER: $DB_USER
           DATABASE_NAME: $DB_NAME
+          AUTH0_ISSUER_URL: ${{ secrets.AUTH0_ISSUER_URL }}
+          AUTH0_AUDIENCE: http://localhost:8080
+          AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+          AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+          AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
         run: |
           npm ci
           npm run migration:run
