@@ -1,45 +1,45 @@
 import { User } from "../user/user.entity";
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+	Column,
+	CreateDateColumn,
+	Entity,
+	ManyToOne,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn
 } from "typeorm";
 
 export enum ArticleStatus {
-  PENDING = "pending",
-  APROVED = "aproved",
-  REJECTED = "rejected",
+	PENDING = "pending",
+	APROVED = "aproved",
+	REJECTED = "rejected",
 }
 
 @Entity()
 export class Article {
-  @PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn()
+	@CreateDateColumn()
   created: Date;
 
-  @UpdateDateColumn()
+	@UpdateDateColumn()
   modified: Date;
 
-  @ManyToOne(() => User)
+	@ManyToOne(() => User)
   user: User;
 
-  @Column()
+	@Column()
   title: string;
 
-  @Column()
+	@Column()
   slug: string;
 
-  @Column({ length: 250 })
+	@Column({ length: 250 })
   description: string;
 
-  @Column()
+	@Column()
   content: string;
 
-  @Column({ type: "enum", enum: ArticleStatus, default: ArticleStatus.PENDING })
+	@Column({ type: "enum", enum: ArticleStatus, default: ArticleStatus.PENDING })
   status: string;
 }

@@ -7,35 +7,36 @@ import { UpdateArticleDTO } from "./dto/update-article.dto";
 
 @Injectable()
 export class ArticleService {
-  constructor(
+	constructor(
     @InjectRepository(Article)
     private articleRepository: Repository<Article>
-  ) { }
+	) { }
 
-  getArticleByID(id: number): Promise<Article> {
-    return this.articleRepository.findOne({ where: { id } });
-  }
+	getArticleByID(id: number): Promise<Article> {
+		return this.articleRepository.findOne({ where: { id } });
+	}
 
-  getAllArticles(): Promise<Article[]> {
-    return this.articleRepository.find();
-  }
+	getAllArticles(): Promise<Article[]> {
+		return this.articleRepository.find();
+	}
 
-  createArticle(createArticleDTO: CreateArticleDTO): Promise<Article> {
-    const article = new Article();
+	createArticle(createArticleDTO: CreateArticleDTO): Promise<Article> {
+		const article = new Article();
 
-    article.slug = createArticleDTO.slug;
-    article.user = createArticleDTO.user;
-    article.title = createArticleDTO.title;
-    article.description = createArticleDTO.description;
-    article.status = createArticleDTO.status;
-    article.content = createArticleDTO.content;
+		article.slug = createArticleDTO.slug;
+		article.user = createArticleDTO.user;
+		article.title = createArticleDTO.title;
+		article.description = createArticleDTO.description;
+		article.status = createArticleDTO.status;
+		article.content = createArticleDTO.content;
 
-    return this.articleRepository.save(article);
-  }
+		return this.articleRepository.save(article);
+	}
 
-  async updateArticle(id: number, updateArticleDTO: UpdateArticleDTO): Promise<Article> {
-    let article = await this.getArticleByID(id);
-    article = { ...article, ...updateArticleDTO };
-    return this.articleRepository.save(article);
-  }
+	async updateArticle(id: number, updateArticleDTO: UpdateArticleDTO): Promise<Article> {
+		let article = await this.getArticleByID(id);
+
+		article = { ...article, ...updateArticleDTO };
+		return this.articleRepository.save(article);
+	}
 }

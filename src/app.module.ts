@@ -5,7 +5,7 @@ import { UserModule } from "./user/user.module";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { config } from "./typeorm-config";
-import { ArticleModule } from './article/article.module';
+import { ArticleModule } from "./article/article.module";
 
 @Module({
 	imports: [
