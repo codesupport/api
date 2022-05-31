@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Article } from "./article.entity";
+import { Article, ArticleStatus } from "./article.entity";
 import { CreateArticleDTO } from "./dto/create-article.dto";
 import { UpdateArticleDTO } from "./dto/update-article.dto";
 
@@ -27,7 +27,7 @@ export class ArticleService {
 		article.user = createArticleDTO.user;
 		article.title = createArticleDTO.title;
 		article.description = createArticleDTO.description;
-		article.status = createArticleDTO.status;
+		article.status = ArticleStatus.PENDING;
 		article.content = createArticleDTO.content;
 
 		return this.articleRepository.save(article);
