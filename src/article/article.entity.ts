@@ -17,29 +17,29 @@ export enum ArticleStatus {
 @Entity()
 export class Article {
 	@PrimaryGeneratedColumn()
-  id: number;
+	id: number;
 
 	@CreateDateColumn()
-  created: Date;
+	created: Date;
 
 	@UpdateDateColumn()
-  modified: Date;
+	modified: Date;
 
 	@ManyToOne(() => User)
-  user: User;
+	user: User;
 
 	@Column()
-  title: string;
+	title: string;
 
 	@Column()
-  slug: string;
+	slug: string;
 
 	@Column({ length: 250 })
-  description: string;
+	description: string;
 
 	@Column()
-  content: string;
+	content: string;
 
 	@Column({ type: "enum", enum: ArticleStatus, default: ArticleStatus.PENDING })
-  status: string;
+	status: string;
 }

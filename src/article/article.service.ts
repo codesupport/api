@@ -8,8 +8,8 @@ import { UpdateArticleDTO } from "./dto/update-article.dto";
 @Injectable()
 export class ArticleService {
 	constructor(
-    @InjectRepository(Article)
-    private articleRepository: Repository<Article>
+		@InjectRepository(Article)
+		private articleRepository: Repository<Article>
 	) { }
 
 	getArticleByID(id: number): Promise<Article> {
