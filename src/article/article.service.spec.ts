@@ -85,7 +85,6 @@ describe("ArticleService", () => {
 			dto.user = mockUser;
 			dto.title = "Some Article";
 			dto.slug = "some-article";
-			dto.status = ArticleStatus.PENDING;
 			dto.description = "Some small article";
 			dto.content = "Blablablabla some more text blablabla";
 
@@ -94,7 +93,7 @@ describe("ArticleService", () => {
 			await service.createArticle(dto);
 
 			expect(spy).toBeCalled();
-			expect(spy).toBeCalledWith({ ...dto });
+			expect(spy).toBeCalledWith({ ...dto, status: ArticleStatus.PENDING });
 		});
 	});
 
@@ -102,14 +101,19 @@ describe("ArticleService", () => {
 		it("Should do a partial update", async () => {
 			const dto = new UpdateArticleDTO();
 
-			dto.slug = "some-article-2";
-			dto.status = ArticleStatus.REJECTED;
+			dto.title = "Some updated title";
+			dto.content = "Just pretent there is some lorem ipsum here";
 
 			const spy = jest.spyOn(repository, "save");
 
 			await service.updateArticle(1, dto);
 
-			const updatedArticle = { ...mockArticles[0], slug: "some-article-2", status: ArticleStatus.REJECTED };
+			const updatedArticle = {
+				...mockArticles[0],
+				title: "Some updated title",
+				content: "Just pretent there is some lorem ipsum here",
+				description: "Some randomly generated lorem"
+			};
 
 			expect(spy).toBeCalled();
 			expect(spy).toBeCalledWith(updatedArticle);
