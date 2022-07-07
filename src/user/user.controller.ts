@@ -1,12 +1,14 @@
 import {
-	BadRequestException,
+	BadRequestException, Body,
 	Controller,
 	Get,
 	NotFoundException,
-	Param
+	Param, Post, UseGuards
 } from "@nestjs/common";
 import { ApiResponse } from "@nestjs/swagger";
+import { AuthGuard } from "@nestjs/passport";
 import { UserDTO } from "./dto/user.dto";
+import { CreateUserDTO } from "./dto/create-user.dto";
 import { UserService } from "./user.service";
 
 @Controller("user")
@@ -27,6 +29,21 @@ export class UserController {
 		if (!user) {
 			throw new NotFoundException();
 		}
+
+		const { id, username, created, modified } = user;
+
+		return {
+			id,
+			username,
+			created: created.toISOString(),
+			modified: modified.toISOString()
+		};
+	}
+
+	@Post()
+	@UseGuards(AuthGuard("jwt"))
+	async createUser(@Body() body: CreateUserDTO): Promise<UserDTO> {
+		const user = await this.userService.createUser(body);
 
 		const { id, username, created, modified } = user;
 
