@@ -1,11 +1,11 @@
 import { Body, Controller, ForbiddenException, Post, Req, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth } from "@nestjs/swagger";
 import { ArticleService } from "./article.service";
 import { CreateArticleDTO } from "./dto/create-article.dto";
 import { ArticleDTO } from "./dto/article.dto";
 import { UserService } from "../user/user.service";
 import AuthenticatedRequest from "../auth/authenticated-request.interface";
-import {ApiBearerAuth, ApiResponse} from "@nestjs/swagger";
 
 @Controller("article")
 export class ArticleController {

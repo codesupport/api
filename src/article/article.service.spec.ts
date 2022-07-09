@@ -1,11 +1,14 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
-import { User } from "../user/user.entity";
 import { Repository } from "typeorm";
+import { User } from "../user/user.entity";
 import { Article, ArticleStatus } from "./article.entity";
 import { ArticleService } from "./article.service";
 import { CreateArticleDTO } from "./dto/create-article.dto";
 import { UpdateArticleDTO } from "./dto/update-article.dto";
+import { ManagementClient } from "auth0";
+import { UserService } from "../user/user.service";
+import { AuthService } from "../auth/auth.service";
 
 const mockUser: User = {
 	id: 1,
@@ -42,6 +45,32 @@ describe("ArticleService", () => {
 						find: jest.fn().mockResolvedValue(mockArticles),
 						findOne: jest.fn().mockResolvedValue(mockArticles[0]),
 						save: jest.fn().mockResolvedValue(mockArticles[0])
+					}
+				},
+				{
+					provide: ManagementClient,
+					useValue: {
+						getUser: jest.fn().mockResolvedValue(mockUser)
+					}
+				},
+				{
+					provide: UserService,
+					useValue: {
+						getUserByAuthID: jest.fn().mockResolvedValue(mockUser)
+					}
+				},
+				{
+					provide: AuthService,
+					useValue: {
+						isUserValid: jest.fn().mockResolvedValue(true)
+					}
+				},
+				{
+					provide: getRepositoryToken(User),
+					useValue: {
+						find: jest.fn().mockResolvedValue(mockUser),
+						findOne: jest.fn().mockResolvedValue(mockUser),
+						save: jest.fn().mockResolvedValue(mockUser)
 					}
 				}
 			]
@@ -82,7 +111,6 @@ describe("ArticleService", () => {
 		it("should save a new article", async () => {
 			const dto = new CreateArticleDTO();
 
-			dto.user = mockUser;
 			dto.title = "Some Article";
 			dto.slug = "some-article";
 			dto.description = "Some small article";
@@ -90,10 +118,10 @@ describe("ArticleService", () => {
 
 			const spy = jest.spyOn(repository, "save");
 
-			await service.createArticle(dto);
+			await service.createArticle(dto, mockUser);
 
 			expect(spy).toBeCalled();
-			expect(spy).toBeCalledWith({ ...dto, status: ArticleStatus.PENDING });
+			expect(spy).toBeCalledWith({ ...dto, user: mockUser, status: ArticleStatus.PENDING });
 		});
 	});
 
