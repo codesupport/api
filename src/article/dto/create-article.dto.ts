@@ -1,9 +1,15 @@
-import { User } from "src/user/user.entity";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateArticleDTO {
-	user: User;
+	@ApiProperty()
 	title: string;
+
+	@ApiProperty()
 	slug: string;
+
+	@ApiProperty()
 	description: string;
+
+	@ApiProperty()
 	content: string;
 }
