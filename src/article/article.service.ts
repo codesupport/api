@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { Article, ArticleStatus } from "./article.entity";
 import { CreateArticleDTO } from "./dto/create-article.dto";
 import { UpdateArticleDTO } from "./dto/update-article.dto";
+import { User } from "../user/user.entity";
 
 @Injectable()
 export class ArticleService {
@@ -20,15 +21,15 @@ export class ArticleService {
 		return this.articleRepository.find();
 	}
 
-	createArticle(createArticleDTO: CreateArticleDTO): Promise<Article> {
+	createArticle(createArticleDTO: CreateArticleDTO, user: User): Promise<Article> {
 		const article = new Article();
 
 		article.slug = createArticleDTO.slug;
-		article.user = createArticleDTO.user;
 		article.title = createArticleDTO.title;
 		article.description = createArticleDTO.description;
 		article.status = ArticleStatus.PENDING;
 		article.content = createArticleDTO.content;
+		article.user = user;
 
 		return this.articleRepository.save(article);
 	}

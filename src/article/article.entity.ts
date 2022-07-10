@@ -9,9 +9,9 @@ import {
 } from "typeorm";
 
 export enum ArticleStatus {
-	PENDING = "pending",
-	APROVED = "aproved",
-	REJECTED = "rejected",
+	PENDING = "PENDING",
+	APPROVED = "APPROVED",
+	REJECTED = "REJECTED",
 }
 
 @Entity()
@@ -31,7 +31,7 @@ export class Article {
 	@Column()
 	title: string;
 
-	@Column()
+	@Column({ unique: true })
 	slug: string;
 
 	@Column({ length: 250 })
