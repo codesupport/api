@@ -1,5 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { ForbiddenException } from "@nestjs/common";
+import { ForbiddenException, NotFoundException } from "@nestjs/common";
 import { ArticleController } from "./article.controller";
 import { UserService } from "../user/user.service";
 import { User } from "../user/user.entity";
@@ -25,17 +25,30 @@ const mockUser: User = {
 	modified: new Date(2022, 3, 1, 24, 55)
 };
 
-const mockArticle: Article = {
-	id: 1,
-	user: mockUser,
-	created: new Date(2022, 2, 30, 15, 32),
-	modified: new Date(2022, 3, 1, 24, 55),
-	title: "My Awesome Article",
-	slug: "my-awesome-article",
-	status: ArticleStatus.PENDING,
-	description: "This is my awesome article.",
-	content: "Why is it awesome? I don't know. I was meant to write why in this article."
-};
+const mockArticles: Article[] = [
+	{
+		id: 1,
+		user: mockUser,
+		created: new Date(2022, 2, 30, 15, 32),
+		modified: new Date(2022, 3, 1, 24, 55),
+		title: "My Awesome Approved Article",
+		slug: "my-awesome-approved-article",
+		status: ArticleStatus.APPROVED,
+		description: "This is my awesome article.",
+		content: "Why is it awesome? I don't know. I was meant to write why in this article."
+	},
+	{
+		id: 2,
+		user: mockUser,
+		created: new Date(2022, 2, 30, 15, 32),
+		modified: new Date(2022, 3, 1, 24, 55),
+		title: "My Awesome Pending Article",
+		slug: "my-awesome-pending-article",
+		status: ArticleStatus.PENDING,
+		description: "This is my awesome article.",
+		content: "Why is it awesome? I don't know. I was meant to write why in this article."
+	}
+];
 
 describe("ArticleController", () => {
 	let controller: ArticleController;
@@ -55,7 +68,8 @@ describe("ArticleController", () => {
 				{
 					provide: ArticleService,
 					useValue: {
-						createArticle: jest.fn().mockResolvedValue(mockArticle)
+						createArticle: jest.fn().mockResolvedValue(mockArticles[0]),
+						getArticleByID: id => mockArticles[id - 1]
 					}
 				}
 			]
@@ -68,6 +82,35 @@ describe("ArticleController", () => {
 
 	it("should be defined", () => {
 		expect(controller).toBeDefined();
+	});
+
+	describe("getArticle()", () => {
+		it("should return a 404 if the article doesn't exist", async () => {
+			const getArticleByIdSpy = jest.spyOn(articleService, "getArticleByID");
+			const result = await getError(async () => controller.getArticle(3));
+
+			expect(result).toBeInstanceOf(NotFoundException);
+
+			expect(getArticleByIdSpy).toBeCalled();
+		});
+
+		it("should return a 404 if the article is not APPROVED", async () => {
+			const getArticleByIdSpy = jest.spyOn(articleService, "getArticleByID");
+			const result = await getError(async () => controller.getArticle(2));
+
+			expect(result).toBeInstanceOf(NotFoundException);
+
+			expect(getArticleByIdSpy).toBeCalled();
+		});
+
+		it("should return the article", async () => {
+			const getArticleByIdSpy = jest.spyOn(articleService, "getArticleByID");
+			const result = await controller.getArticle(1);
+
+			expect(result.id).toBe(mockArticles[0].id);
+
+			expect(getArticleByIdSpy).toBeCalled();
+		});
 	});
 
 	describe("createArticle", () => {
@@ -84,7 +127,7 @@ describe("ArticleController", () => {
 				content: "Why is it awesome? I don't know. I was meant to write why in this article."
 			});
 
-			expect(result.id).toBe(mockArticle.id);
+			expect(result.id).toBe(mockArticles[0].id);
 			expect(result.user.id).toBe(mockUser.id);
 
 			expect(createArticleSpy).toBeCalled();

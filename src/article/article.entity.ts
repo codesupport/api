@@ -25,7 +25,7 @@ export class Article {
 	@UpdateDateColumn()
 	modified: Date;
 
-	@ManyToOne(() => User)
+	@ManyToOne(() => User, { eager: true })
 	user: User;
 
 	@Column()
