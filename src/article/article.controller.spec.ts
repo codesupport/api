@@ -70,6 +70,7 @@ describe("ArticleController", () => {
 					useValue: {
 						createArticle: jest.fn().mockResolvedValue(mockArticles[0]),
 						getArticleByID: id => mockArticles[id - 1]
+
 					}
 				}
 			]
