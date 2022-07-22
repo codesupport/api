@@ -1,10 +1,10 @@
-import {Test, TestingModule} from "@nestjs/testing";
-import {ForbiddenException, NotFoundException} from "@nestjs/common";
-import {ArticleController} from "./article.controller";
-import {UserService} from "../user/user.service";
-import {User} from "../user/user.entity";
-import {ArticleService} from "./article.service";
-import {Article, ArticleStatus} from "./article.entity";
+import { Test, TestingModule } from "@nestjs/testing";
+import { ForbiddenException, NotFoundException } from "@nestjs/common";
+import { ArticleController } from "./article.controller";
+import { UserService } from "../user/user.service";
+import { User } from "../user/user.entity";
+import { ArticleService } from "./article.service";
+import { Article, ArticleStatus } from "./article.entity";
 
 class NoErrorThrownError extends Error {}
 
@@ -67,7 +67,7 @@ const mockArticles: Article[] = [
 		status: ArticleStatus.APPROVED,
 		description: "This is my awesome article.",
 		content: "Why is it awesome? I don't know. I was meant to write why in this article."
-	},
+	}
 ];
 
 describe("ArticleController", () => {
@@ -106,7 +106,7 @@ describe("ArticleController", () => {
 		expect(controller).toBeDefined();
 	});
 
-	// describe("getAllArticles()", () => {
+	describe("getAllArticles()", () => {
 		it("returns all APPROVED articles", async () => {
 			const getAllArticlesSpy = jest.spyOn(articleService, "getAllArticles");
 
@@ -153,7 +153,7 @@ describe("ArticleController", () => {
 				status: ArticleStatus.APPROVED
 			});
 		});
-	// });
+	});
 
 	describe("getArticle()", () => {
 		it("should return a 404 if the article doesn't exist", async () => {

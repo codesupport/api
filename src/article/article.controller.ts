@@ -9,14 +9,14 @@ import {
 	Query,
 	UseGuards
 } from "@nestjs/common";
-import {AuthGuard} from "@nestjs/passport";
-import {ApiBearerAuth} from "@nestjs/swagger";
-import {ArticleService} from "./article.service";
-import {CreateArticleDTO} from "./dto/create-article.dto";
-import {ArticleDTO} from "./dto/article.dto";
-import {UserService} from "../user/user.service";
-import {ArticleStatus} from "./article.entity";
-import {AuthUser} from "../auth/auth-user.decorator";
+import { AuthGuard } from "@nestjs/passport";
+import { ApiBearerAuth } from "@nestjs/swagger";
+import { ArticleService } from "./article.service";
+import { CreateArticleDTO } from "./dto/create-article.dto";
+import { ArticleDTO } from "./dto/article.dto";
+import { UserService } from "../user/user.service";
+import { ArticleStatus } from "./article.entity";
+import { AuthUser } from "../auth/auth-user.decorator";
 import GetAllArticlesOptions from "./interfaces/GetAllArticlesOptions";
 
 @Controller("article")
