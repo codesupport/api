@@ -5,6 +5,7 @@ import { Article, ArticleStatus } from "./article.entity";
 import { CreateArticleDTO } from "./dto/create-article.dto";
 import { UpdateArticleDTO } from "./dto/update-article.dto";
 import { User } from "../user/user.entity";
+import GetAllArticlesOptions from "./interfaces/GetAllArticlesOptions";
 
 @Injectable()
 export class ArticleService {
@@ -17,8 +18,16 @@ export class ArticleService {
 		return this.articleRepository.findOne({ where: { id } });
 	}
 
-	getAllArticles(): Promise<Article[]> {
-		return this.articleRepository.find();
+	getArticlesByUserID(id: number): Promise<Article[]> {
+		return this.articleRepository.find({ where: { user: id } });
+	}
+
+	getAllArticles(options?: GetAllArticlesOptions): Promise<Article[]> {
+		return this.articleRepository.find({
+			where: {
+				status: options?.status
+			}
+		});
 	}
 
 	createArticle(createArticleDTO: CreateArticleDTO, user: User): Promise<Article> {

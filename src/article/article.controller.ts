@@ -3,11 +3,11 @@ import {
 	Controller,
 	ForbiddenException,
 	Get,
-	Post,
+	NotFoundException,
 	Param,
-	Req,
-	UseGuards,
-	NotFoundException
+	Post,
+	Query,
+	UseGuards
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { ApiBearerAuth } from "@nestjs/swagger";
@@ -15,8 +15,9 @@ import { ArticleService } from "./article.service";
 import { CreateArticleDTO } from "./dto/create-article.dto";
 import { ArticleDTO } from "./dto/article.dto";
 import { UserService } from "../user/user.service";
-import AuthenticatedRequest from "../auth/authenticated-request.interface";
 import { ArticleStatus } from "./article.entity";
+import { AuthUser } from "../auth/auth-user.decorator";
+import GetAllArticlesOptions from "./interfaces/GetAllArticlesOptions";
 
 @Controller("article")
 export class ArticleController {
@@ -24,6 +25,47 @@ export class ArticleController {
 		private readonly articleService: ArticleService,
 		private readonly userService: UserService
 	) {}
+
+	@Get()
+	async getAllArticles(
+		@Query("userId") userId?: number,
+		@Query("status") status?: ArticleStatus,
+		@AuthUser() authUser?: string
+	): Promise<ArticleDTO[]> {
+		let user;
+		let options: GetAllArticlesOptions = {
+			status: ArticleStatus.APPROVED
+		};
+
+		if (authUser) {
+			user = await this.userService.getUserByAuthID(authUser);
+		}
+
+		if (typeof user !== "undefined" && user?.id === userId) {
+			options.status = status;
+		}
+
+		if (userId) {
+			options.userId = userId;
+		}
+
+		const articles = await this.articleService.getAllArticles(options);
+
+		return articles.map(article => {
+			const { auth_id, ...user } = article.user;
+
+			return {
+				...article,
+				user: {
+					...user,
+					created: article.user.created.toISOString(),
+					modified: article.user.modified.toISOString()
+				},
+				created: article.created.toISOString(),
+				modified: article.modified.toISOString()
+			};
+		});
+	}
 
 	@Get("/:id")
 	async getArticle(@Param("id") articleId: number): Promise<ArticleDTO> {
@@ -51,10 +93,10 @@ export class ArticleController {
 	@UseGuards(AuthGuard("jwt"))
 	@ApiBearerAuth()
 	async createArticle(
-		@Req() req: AuthenticatedRequest,
+		@AuthUser() authUser: string,
 		@Body() body: CreateArticleDTO
 	): Promise<ArticleDTO> {
-		const user = await this.userService.getUserByAuthID(req.user.sub);
+		const user = await this.userService.getUserByAuthID(authUser);
 
 		if (!user) {
 			throw new ForbiddenException("User has no co-responding profile.");

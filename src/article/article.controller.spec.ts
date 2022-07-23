@@ -17,18 +17,27 @@ async function getError<TError>(call: () => unknown): Promise<TError> {
 	}
 }
 
-const mockUser: User = {
-	id: 1,
-	auth_id: "auth0|12341234",
-	username: "johnsmith",
-	created: new Date(2022, 2, 30, 15, 32),
-	modified: new Date(2022, 3, 1, 24, 55)
-};
+const mockUsers: User[] = [
+	{
+		id: 1,
+		auth_id: "auth0|12341234",
+		username: "johnsmith",
+		created: new Date(2022, 2, 30, 15, 32),
+		modified: new Date(2022, 3, 1, 24, 55)
+	},
+	{
+		id: 2,
+		auth_id: "auth0|44321232",
+		username: "smithjohn",
+		created: new Date(2022, 2, 30, 15, 32),
+		modified: new Date(2022, 3, 1, 24, 55)
+	}
+];
 
 const mockArticles: Article[] = [
 	{
 		id: 1,
-		user: mockUser,
+		user: mockUsers[0],
 		created: new Date(2022, 2, 30, 15, 32),
 		modified: new Date(2022, 3, 1, 24, 55),
 		title: "My Awesome Approved Article",
@@ -39,12 +48,23 @@ const mockArticles: Article[] = [
 	},
 	{
 		id: 2,
-		user: mockUser,
+		user: mockUsers[0],
 		created: new Date(2022, 2, 30, 15, 32),
 		modified: new Date(2022, 3, 1, 24, 55),
 		title: "My Awesome Pending Article",
 		slug: "my-awesome-pending-article",
 		status: ArticleStatus.PENDING,
+		description: "This is my awesome article.",
+		content: "Why is it awesome? I don't know. I was meant to write why in this article."
+	},
+	{
+		id: 3,
+		user: mockUsers[1],
+		created: new Date(2022, 2, 30, 15, 32),
+		modified: new Date(2022, 3, 1, 24, 55),
+		title: "Another Awesome Approved Article",
+		slug: "another-awesome-approved-article",
+		status: ArticleStatus.APPROVED,
 		description: "This is my awesome article.",
 		content: "Why is it awesome? I don't know. I was meant to write why in this article."
 	}
@@ -62,12 +82,13 @@ describe("ArticleController", () => {
 				{
 					provide: UserService,
 					useValue: {
-						getUserByAuthID: jest.fn().mockResolvedValue(mockUser)
+						getUserByAuthID: jest.fn().mockResolvedValue(mockUsers[0])
 					}
 				},
 				{
 					provide: ArticleService,
 					useValue: {
+						getAllArticles: jest.fn().mockResolvedValue(mockArticles),
 						createArticle: jest.fn().mockResolvedValue(mockArticles[0]),
 						getArticleByID: id => mockArticles[id - 1]
 
@@ -85,10 +106,59 @@ describe("ArticleController", () => {
 		expect(controller).toBeDefined();
 	});
 
+	describe("getAllArticles()", () => {
+		it("returns all APPROVED articles", async () => {
+			const getAllArticlesSpy = jest.spyOn(articleService, "getAllArticles");
+
+			await controller.getAllArticles();
+
+			expect(getAllArticlesSpy).toBeCalled();
+			expect(getAllArticlesSpy).toBeCalledWith({
+				status: ArticleStatus.APPROVED
+			});
+		});
+
+		it("returns all APPROVED articles by a specific user", async () => {
+			const getAllArticlesSpy = jest.spyOn(articleService, "getAllArticles");
+
+			await controller.getAllArticles(mockUsers[1].id);
+
+			expect(getAllArticlesSpy).toBeCalled();
+			expect(getAllArticlesSpy).toBeCalledWith({
+				userId: mockUsers[1].id,
+				status: ArticleStatus.APPROVED
+			});
+		});
+
+		it("returns any status of articles by a specific user if the request is made by that user", async () => {
+			const getAllArticlesSpy = jest.spyOn(articleService, "getAllArticles");
+
+			await controller.getAllArticles(mockUsers[0].id, ArticleStatus.PENDING, mockUsers[0].auth_id);
+
+			expect(getAllArticlesSpy).toBeCalled();
+			expect(getAllArticlesSpy).toBeCalledWith({
+				userId: mockUsers[0].id,
+				status: ArticleStatus.PENDING
+			});
+		});
+
+		it("returns APPROVED of articles by a specific user if the request is made by a different user", async () => {
+			const getAllArticlesSpy = jest.spyOn(articleService, "getAllArticles");
+
+			await controller.getAllArticles(mockUsers[1].id, ArticleStatus.PENDING, mockUsers[0].auth_id);
+
+			expect(getAllArticlesSpy).toBeCalled();
+			expect(getAllArticlesSpy).toBeCalledWith({
+				userId: mockUsers[1].id,
+				status: ArticleStatus.APPROVED
+			});
+		});
+	});
+
 	describe("getArticle()", () => {
 		it("should return a 404 if the article doesn't exist", async () => {
 			const getArticleByIdSpy = jest.spyOn(articleService, "getArticleByID");
-			const result = await getError(async () => controller.getArticle(3));
+			const result = await getError(async () => controller.getArticle(4));
 
 			expect(result).toBeInstanceOf(NotFoundException);
 
@@ -129,7 +199,7 @@ describe("ArticleController", () => {
 			});
 
 			expect(result.id).toBe(mockArticles[0].id);
-			expect(result.user.id).toBe(mockUser.id);
+			expect(result.user.id).toBe(mockUsers[0].id);
 
 			expect(createArticleSpy).toBeCalled();
 		});
