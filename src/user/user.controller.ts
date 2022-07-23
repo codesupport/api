@@ -15,6 +15,17 @@ import { UserService } from "./user.service";
 export class UserController {
 	constructor(private userService: UserService) {}
 
+	@Get()
+	async getAllUsers(): Promise<UserDTO[]> {
+		const users = await this.userService.getAllUsers();
+
+		return users.map(({ auth_id, ...user }) => ({
+			...user,
+			created: user.created.toISOString(),
+			modified: user.modified.toISOString()
+		}));
+	}
+
 	@Get("/:id")
 	@ApiResponse({ status: 200, type: UserDTO })
 	@ApiResponse({ status: 400 })
