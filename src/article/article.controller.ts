@@ -51,15 +51,13 @@ export class ArticleController {
 
 		const articles = await this.articleService.getAllArticles(options);
 
-		console.log(options);
-
 		return articles.map(article => {
-			delete article.user.auth_id;
+			const { auth_id, ...user } = article.user;
 
 			return {
 				...article,
 				user: {
-					...article.user,
+					...user,
 					created: article.user.created.toISOString(),
 					modified: article.user.modified.toISOString()
 				},
