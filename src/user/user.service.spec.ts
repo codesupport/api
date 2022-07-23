@@ -84,7 +84,7 @@ describe("UserService", () => {
 		it("should return all users", async () => {
 			const spy = jest.spyOn(repository, "find");
 
-			const result = await userService.getAll();
+			const result = await userService.getAllUsers();
 
 			expect(result).toEqual(mockUserData);
 			expect(spy).toBeCalled();
