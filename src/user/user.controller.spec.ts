@@ -44,7 +44,8 @@ describe("UserController", () => {
 					provide: UserService,
 					useValue: {
 						getUserByID: jest.fn().mockResolvedValue(mockUserData[0]),
-						createUser: jest.fn().mockResolvedValue(mockUserData[1])
+						createUser: jest.fn().mockResolvedValue(mockUserData[1]),
+						getAllUsers: jest.fn().mockResolvedValue(mockUserData)
 					}
 				}
 			]
@@ -56,6 +57,19 @@ describe("UserController", () => {
 
 	it("should be defined", () => {
 		expect(controller).toBeDefined();
+	});
+
+	describe("getAllUsers()", () => {
+		it("should return all users", async () => {
+			const spy = jest.spyOn(service, "getAllUsers");
+
+			const result = await controller.getAllUsers();
+
+			expect(result.length).toEqual(mockUserData.length);
+			expect(result[0]).not.toHaveProperty("auth_id");
+
+			expect(spy).toBeCalled();
+		});
 	});
 
 	describe("getUser()", () => {

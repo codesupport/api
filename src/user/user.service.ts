@@ -22,7 +22,7 @@ export class UserService {
 		return this.usersRepository.findOne({ where: { auth_id } });
 	}
 
-	getAll(): Promise<User[]> {
+	getAllUsers(): Promise<User[]> {
 		return this.usersRepository.find();
 	}
 
