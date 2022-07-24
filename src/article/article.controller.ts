@@ -18,6 +18,7 @@ import { UserService } from "../user/user.service";
 import { ArticleStatus } from "./article.entity";
 import { AuthUser } from "../auth/auth-user.decorator";
 import GetAllArticlesOptions from "./interfaces/GetAllArticlesOptions";
+import { AuthStrategy } from "../auth/auth-strategy.enum";
 
 @Controller("article")
 export class ArticleController {
@@ -90,7 +91,7 @@ export class ArticleController {
 	}
 
 	@Post()
-	@UseGuards(AuthGuard("jwt"))
+	@UseGuards(AuthGuard(AuthStrategy.JWT))
 	@ApiBearerAuth()
 	async createArticle(
 		@AuthUser() authUser: string,

@@ -9,14 +9,15 @@ async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
 	const swaggerConfig = new DocumentBuilder()
-		.setTitle("Codesupport API")
+		.setTitle("CodeSupport API")
 		.setVersion("v2")
-		.setDescription("The new and better CodeSupport API")
-		.setContact("LamboCreeper", "https://codesupport.dev", "")
+		.setDescription("The CodeSupport API acts as a central service used for management of CodeSupport user generated content.")
+		.setContact("CodeSupport Discord", "https://codesupport.dev/discord", "")
 		.build();
+
 	const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
 
-	SwaggerModule.setup("api", app, swaggerDocument);
+	SwaggerModule.setup("docs", app, swaggerDocument);
 
 	await app.listen(port);
 	console.log(`Now listening on port ${port}`);
