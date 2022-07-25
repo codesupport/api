@@ -1,5 +1,9 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
+const extra = process.env.NODE_ENV === "production"
+	? { "ssl": true, "rejectUnauthorized": false }
+	: {};
+
 export const config: TypeOrmModuleOptions = {
 	type: "postgres",
 	host: process.env.DATABASE_HOST,
@@ -15,7 +19,8 @@ export const config: TypeOrmModuleOptions = {
 	cli: {
 		migrationsDir: `${__dirname}/migration`
 	},
-	keepConnectionAlive: true
+	keepConnectionAlive: true,
+	...extra
 };
 
 export const seederConfig: TypeOrmModuleOptions = {
