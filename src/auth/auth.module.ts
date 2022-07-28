@@ -2,8 +2,8 @@ import { Module } from "@nestjs/common";
 import { PassportModule } from "@nestjs/passport";
 import { ManagementClient } from "auth0";
 import { JWTStrategy } from "./jwt.strategy";
+import { APIKeyStrategy } from "./api-key.strategy";
 import { AuthService } from "./auth.service";
-import {APIKeyStrategy} from "./api-key.strategy";
 
 @Module({
 	imports: [PassportModule.register({ defaultStrategy: "jwt" })],
