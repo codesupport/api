@@ -6,11 +6,7 @@ const extra = process.env.NODE_ENV === "production"
 
 export const config: TypeOrmModuleOptions = {
 	type: "postgres",
-	host: process.env.DATABASE_HOST,
-	port: Number.parseInt(process.env.DATABASE_PORT) || 5432,
-	username: process.env.DATABASE_USER,
-	password: process.env.DATABASE_PASS,
-	database: process.env.DATABASE_NAME,
+	url: process.env.DATABASE_URL,
 	entities: [
 		`${__dirname}/**/*.entity{.ts,.js}`
 	],
@@ -26,11 +22,7 @@ export const config: TypeOrmModuleOptions = {
 export const seederConfig: TypeOrmModuleOptions = {
 	name: "seed",
 	type: "postgres",
-	host: process.env.DATABASE_HOST,
-	port: Number.parseInt(process.env.DATABASE_PORT) || 5432,
-	username: process.env.DATABASE_USER,
-	password: process.env.DATABASE_PASS,
-	database: process.env.DATABASE_NAME,
+	url: process.env.DATABASE_URL,
 	synchronize: false,
 	migrations: [`${__dirname}/seeds/*{.ts,.js}`],
 	cli: {
