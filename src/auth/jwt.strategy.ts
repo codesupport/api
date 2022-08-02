@@ -2,9 +2,10 @@ import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 import { passportJwtSecret } from "jwks-rsa";
+import { AuthStrategy } from "./auth-strategy.enum";
 
 @Injectable()
-export class JWTStrategy extends PassportStrategy(Strategy) {
+export class JWTStrategy extends PassportStrategy(Strategy, AuthStrategy.JWT) {
 	constructor() {
 		super({
 			secretOrKeyProvider: passportJwtSecret({

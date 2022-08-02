@@ -10,6 +10,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { UserDTO } from "./dto/user.dto";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { UserService } from "./user.service";
+import { AuthStrategy } from "../auth/auth-strategy.enum";
 
 @Controller("user")
 export class UserController {
@@ -52,7 +53,7 @@ export class UserController {
 	}
 
 	@Post()
-	@UseGuards(AuthGuard("jwt"))
+	@UseGuards(AuthGuard(AuthStrategy.API_KEY))
 	async createUser(@Body() body: CreateUserDTO): Promise<UserDTO> {
 		const user = await this.userService.createUser(body);
 
