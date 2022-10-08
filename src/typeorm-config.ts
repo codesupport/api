@@ -1,7 +1,7 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 
 const extra = process.env.NODE_ENV === "production"
-	? { "ssl": true, "rejectUnauthorized": false }
+	? { "rejectUnauthorized": false }
 	: {};
 
 export const config: TypeOrmModuleOptions = {
